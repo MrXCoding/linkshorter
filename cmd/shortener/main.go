@@ -1,80 +1,17 @@
 package main
 
 import (
-	"errors"
-	"io"
+	"github.com/MrXCoding/linkshorter/internal/storage"
 	"log"
-	"net/http"
+
+	"github.com/MrXCoding/linkshorter/cmd/server"
 )
-
-const (
-	baseURL       = "http://localhost:8080/"
-	deafaultHashe = "EwHXdJfB"
-	contentType   = "text/plain"
-)
-
-var methodAllowedError = "Only POST and GET methods allowed"
-
-var hashStorage = map[string]string{}
-
-func handle(res http.ResponseWriter, req *http.Request) {
-	if isValid, err := validate(req); !isValid {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(err.Error()))
-		return
-	}
-
-	process(res, req)
-}
-
-func validate(req *http.Request) (bool, error) {
-	if req.Method != http.MethodPost && req.Method != http.MethodGet {
-		return false, errors.New(methodAllowedError)
-	}
-
-	return true, nil
-}
-
-func process(res http.ResponseWriter, req *http.Request) {
-	switch req.Method {
-	case http.MethodPost:
-		save(res, req)
-	case http.MethodGet:
-		get(res, req)
-	}
-}
-
-func save(res http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-	url, err := io.ReadAll(req.Body)
-	if err != nil {
-		res.WriteHeader(http.StatusCreated)
-		res.Write([]byte(""))
-		return
-	}
-
-	hashStorage[deafaultHashe] = string(url)
-
-	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte(baseURL + deafaultHashe))
-}
-
-func get(res http.ResponseWriter, req *http.Request) {
-	hash := req.URL.Path[1:]
-
-	url, ok := hashStorage[hash]
-	if !ok {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte("unkonwn hash"))
-	}
-
-	res.Header().Add("Location", url)
-	res.WriteHeader(http.StatusTemporaryRedirect)
-}
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc(`/`, handle)
+	db := storage.NewInMemory()
 
-	log.Fatal(http.ListenAndServe(`:8080`, mux))
+	err := server.Run(db)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
