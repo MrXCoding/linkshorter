@@ -13,10 +13,7 @@ const (
 	contentType   = "text/plain"
 )
 
-var (
-	methodAllowedError = "Only POST and GET methods allowed"
-	contentTypeError   = "Only text/plain header allowed"
-)
+var methodAllowedError = "Only POST and GET methods allowed"
 
 var hashStorage = map[string]string{}
 
