@@ -10,7 +10,10 @@ import (
 	"time"
 )
 
-func Encode(str string, seed string) string {
+type Sha256Base68 struct {
+}
+
+func (g *Sha256Base68) Encode(str string, seed string) string {
 	if seed == "" {
 		seed = strconv.FormatInt(time.Now().UnixNano(), 10)
 	}
