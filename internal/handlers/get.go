@@ -13,7 +13,7 @@ func Get(db storage.Repository) http.HandlerFunc {
 		url, err := db.Get(hash)
 		if err != nil {
 			res.WriteHeader(http.StatusBadRequest)
-			res.Write([]byte("unkonwn hash"))
+			res.Write([]byte(err.Error()))
 		}
 
 		res.Header().Add("Location", url)
