@@ -8,14 +8,14 @@ import (
 )
 
 const (
-	BASE_URL      = "http://localhost:8080/"
-	DEFAULT_HASHE = "EwHXdJfB"
-	CONTENT_TYPE  = "text/plain"
+	baseUrl       = "http://localhost:8080/"
+	deafaultHashe = "EwHXdJfB"
+	contentType   = "text/plain"
 )
 
 var (
-	MethodAllowedError = "Only POST and GET methods allowed"
-	ContentTypeError   = "Only text/plain header allowed"
+	methodAllowedError = "Only POST and GET methods allowed"
+	contentTypeError   = "Only text/plain header allowed"
 )
 
 var hashStorage = map[string]string{}
@@ -32,11 +32,11 @@ func handle(res http.ResponseWriter, req *http.Request) {
 
 func validate(req *http.Request) (bool, error) {
 	if req.Method != http.MethodPost && req.Method != http.MethodGet {
-		return false, errors.New(MethodAllowedError)
+		return false, errors.New(methodAllowedError)
 	}
 
-	if ctype := req.Header.Get("Content-Type"); ctype != CONTENT_TYPE {
-		return false, errors.New(ContentTypeError)
+	if ctype := req.Header.Get("Content-Type"); ctype != contentType {
+		return false, errors.New(contentTypeError)
 	}
 
 	return true, nil
@@ -59,10 +59,10 @@ func save(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("Error body reading"))
 	}
 
-	hashStorage[DEFAULT_HASHE] = string(url)
+	hashStorage[deafaultHashe] = string(url)
 
 	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte(BASE_URL + DEFAULT_HASHE))
+	res.Write([]byte(baseUrl + deafaultHashe))
 }
 
 func get(res http.ResponseWriter, req *http.Request) {
@@ -82,5 +82,5 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc(`/`, handle)
 
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	log.Fatal(http.ListenAndServe(":8090", mux))
 }
