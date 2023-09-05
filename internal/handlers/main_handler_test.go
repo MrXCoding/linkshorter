@@ -5,7 +5,7 @@ import (
 	"github.com/MrXCoding/linkshorter/internal/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -73,7 +73,7 @@ func TestHandle(t *testing.T) {
 			}
 
 			if tt.method == http.MethodPost {
-				userResult, err := ioutil.ReadAll(result.Body)
+				userResult, err := io.ReadAll(result.Body)
 				require.NoError(t, err)
 				err = result.Body.Close()
 				require.NoError(t, err)
