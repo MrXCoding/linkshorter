@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	baseUrl       = "http://localhost:8080/"
+	baseURL       = "http://localhost:8080/"
 	deafaultHashe = "EwHXdJfB"
 	contentType   = "text/plain"
 )
