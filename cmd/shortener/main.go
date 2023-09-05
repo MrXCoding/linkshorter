@@ -62,7 +62,7 @@ func save(res http.ResponseWriter, req *http.Request) {
 	hashStorage[deafaultHashe] = string(url)
 
 	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte(baseUrl + deafaultHashe))
+	res.Write([]byte(baseURL + deafaultHashe))
 }
 
 func get(res http.ResponseWriter, req *http.Request) {
