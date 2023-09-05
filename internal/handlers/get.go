@@ -1,14 +1,15 @@
 package handlers
 
 import (
-	"net/http"
-
 	"github.com/MrXCoding/linkshorter/internal/storage"
+	"net/http"
+	"strings"
 )
 
 func Get(db storage.Repository) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
-		hash := req.URL.Path[1:]
+		arr := strings.Split(req.URL.Path, "/")
+		hash := arr[1]
 
 		url, err := db.Get(hash)
 		if err != nil {

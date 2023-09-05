@@ -16,7 +16,7 @@ func NewInMemory() *InMemory {
 }
 
 func (im *InMemory) Save(url string) (string, error) {
-	hash := hasher.Encode(url)
+	hash := hasher.Encode(url, "")
 
 	im.storage[hash] = url
 

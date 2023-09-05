@@ -6,10 +6,16 @@ import (
 	"github.com/itchyny/base58-go"
 	"math/big"
 	"os"
+	"strconv"
+	"time"
 )
 
-func Encode(str string) string {
-	urlHashBytes := sha256Of(str)
+func Encode(str string, seed string) string {
+	if seed == "" {
+		seed = strconv.FormatInt(time.Now().UnixNano(), 10)
+	}
+
+	urlHashBytes := sha256Of(str + seed)
 	generatedNumber := new(big.Int).SetBytes(urlHashBytes).Uint64()
 	finalString := base58Encoded([]byte(fmt.Sprintf("%d", generatedNumber)))
 	return finalString[:8]
