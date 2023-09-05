@@ -35,7 +35,8 @@ func validate(req *http.Request) (bool, error) {
 		return false, errors.New(methodAllowedError)
 	}
 
-	if ctype := req.Header.Get("Content-Type"); ctype != contentType {
+	ctype := req.Header.Get("Content-Type")
+	if req.Method == http.MethodPost && ctype != contentType {
 		return false, errors.New(contentTypeError)
 	}
 
@@ -82,5 +83,5 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc(`/`, handle)
 
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	log.Fatal(http.ListenAndServe(`:8080`, mux))
 }
