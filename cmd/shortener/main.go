@@ -35,11 +35,6 @@ func validate(req *http.Request) (bool, error) {
 		return false, errors.New(methodAllowedError)
 	}
 
-	ctype := req.Header.Get("Content-Type")
-	if req.Method == http.MethodPost && ctype != contentType {
-		return false, errors.New(contentTypeError)
-	}
-
 	return true, nil
 }
 
@@ -56,8 +51,9 @@ func save(res http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 	url, err := io.ReadAll(req.Body)
 	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte("Error body reading"))
+		res.WriteHeader(http.StatusCreated)
+		res.Write([]byte(""))
+		return
 	}
 
 	hashStorage[deafaultHashe] = string(url)
