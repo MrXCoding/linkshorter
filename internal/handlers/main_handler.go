@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"github.com/MrXCoding/linkshorter/internal/storage"
-	"github.com/MrXCoding/linkshorter/internal/validation"
 	"io"
 	"net/http"
 	"strings"
@@ -10,24 +9,7 @@ import (
 
 const baseURL = "http://localhost:8080/"
 
-func Main(db storage.Repository) http.HandlerFunc {
-	return func(res http.ResponseWriter, req *http.Request) {
-		if isValid, err := validation.Validate(req); !isValid {
-			res.WriteHeader(http.StatusBadRequest)
-			res.Write([]byte(err.Error()))
-			return
-		}
-
-		switch req.Method {
-		case http.MethodPost:
-			save(db)(res, req)
-		case http.MethodGet:
-			get(db)(res, req)
-		}
-	}
-}
-
-func get(db storage.Repository) http.HandlerFunc {
+func Get(db storage.Repository) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		arr := strings.Split(req.URL.Path, "/")
 		hash := arr[1]
@@ -43,7 +25,7 @@ func get(db storage.Repository) http.HandlerFunc {
 	}
 }
 
-func save(db storage.Repository) http.HandlerFunc {
+func Save(db storage.Repository) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		url, err := io.ReadAll(req.Body)

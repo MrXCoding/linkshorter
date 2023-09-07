@@ -32,7 +32,7 @@ func TestHandle(t *testing.T) {
 		name    string
 		body    string
 		method  string
-		storage storage.Repository
+		handler http.HandlerFunc
 		want    want
 	}{
 		{
@@ -40,7 +40,7 @@ func TestHandle(t *testing.T) {
 			name:    "POST test",
 			body:    "ya.ru",
 			method:  http.MethodPost,
-			storage: db,
+			handler: Save(db),
 			want: want{
 				statusCode: http.StatusCreated,
 			},
@@ -50,7 +50,7 @@ func TestHandle(t *testing.T) {
 			request: "/ya.ru",
 			method:  http.MethodGet,
 			body:    "ya.ru",
-			storage: db,
+			handler: Get(db),
 			want: want{
 				statusCode: http.StatusTemporaryRedirect,
 			},
@@ -60,7 +60,7 @@ func TestHandle(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			request := httptest.NewRequest(tt.method, tt.request, bytes.NewBufferString(tt.body))
 			w := httptest.NewRecorder()
-			h := http.HandlerFunc(Main(db))
+			h := http.HandlerFunc(tt.handler)
 			h(w, request)
 
 			result := w.Result()
