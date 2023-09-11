@@ -9,12 +9,12 @@ var (
 		host: "localhost",
 		port: 8080,
 	}
-	baseURL = "http://localhost:8080/"
+	baseURL *string
 )
 
 func Init() {
 	flag.Var(&netAddr, "a", "Net address host:port")
-	baseURL = *flag.String("b", baseURL, "base url")
+	baseURL = flag.String("b", "http://localhost:8080", "base url")
 
 	flag.Parse()
 }
@@ -29,12 +29,12 @@ func (m *Main) Host() string {
 }
 
 func (m *Main) GetBaseURL() string {
-	return m.baseURL
+	return m.baseURL + "/"
 }
 
 func New() Main {
 	return Main{
 		netAddr: netAddr,
-		baseURL: baseURL,
+		baseURL: *baseURL,
 	}
 }
