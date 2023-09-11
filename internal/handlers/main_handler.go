@@ -1,13 +1,12 @@
 package handlers
 
 import (
+	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/MrXCoding/linkshorter/internal/storage"
 	"io"
 	"net/http"
 	"strings"
 )
-
-const baseURL = "http://localhost:8080/"
 
 func Get(db storage.Repository) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
@@ -25,7 +24,7 @@ func Get(db storage.Repository) http.HandlerFunc {
 	}
 }
 
-func Save(db storage.Repository) http.HandlerFunc {
+func Save(db storage.Repository, config config.Main) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		url, err := io.ReadAll(req.Body)
@@ -42,6 +41,6 @@ func Save(db storage.Repository) http.HandlerFunc {
 		}
 
 		res.WriteHeader(http.StatusCreated)
-		res.Write([]byte(baseURL + hash))
+		res.Write([]byte(config.GetBaseUrl() + hash))
 	}
 }

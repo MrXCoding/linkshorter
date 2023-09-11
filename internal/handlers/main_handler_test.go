@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/MrXCoding/linkshorter/internal/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -21,6 +22,7 @@ func (h *HasherForTest) Encode(str string, seed string) string {
 
 func TestHandle(t *testing.T) {
 	db := storage.NewInMemory(&HasherForTest{})
+	conf := config.New()
 
 	type want struct {
 		url        string
@@ -40,7 +42,7 @@ func TestHandle(t *testing.T) {
 			name:    "POST test",
 			body:    "ya.ru",
 			method:  http.MethodPost,
-			handler: Save(db),
+			handler: Save(db, conf),
 			want: want{
 				statusCode: http.StatusCreated,
 			},
@@ -78,7 +80,7 @@ func TestHandle(t *testing.T) {
 				err = result.Body.Close()
 				require.NoError(t, err)
 
-				assert.True(t, strings.Contains(string(userResult), baseURL))
+				assert.True(t, strings.Contains(string(userResult), conf.GetBaseUrl()))
 			}
 		})
 	}

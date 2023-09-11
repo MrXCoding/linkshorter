@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 
@@ -8,17 +9,15 @@ import (
 	"github.com/MrXCoding/linkshorter/internal/storage"
 )
 
-const serverAddr = `:8080`
-
-func Run(db storage.Repository) error {
+func Run(db storage.Repository, config config.Main) error {
 	r := chi.NewRouter()
 
 	r.Route("/", func(r chi.Router) {
+		r.Post("/", handlers.Save(db, config))
 		r.Get("/{hash}", handlers.Get(db))
-		r.Post("/", handlers.Save(db))
 	})
 
-	err := http.ListenAndServe(serverAddr, r)
+	err := http.ListenAndServe(config.Host(), r)
 	if err != nil {
 		return err
 	}
