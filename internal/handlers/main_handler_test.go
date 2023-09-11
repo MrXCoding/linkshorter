@@ -22,7 +22,13 @@ func (h *HasherForTest) Encode(str string, seed string) string {
 
 func TestHandle(t *testing.T) {
 	db := storage.NewInMemory(&HasherForTest{})
-	conf := config.New()
+	conf := config.Main{
+		NetAddr: config.NetAddress{
+			Host: "localhost",
+			Port: 8080,
+		},
+		BaseURL: "http://localhost",
+	}
 
 	type want struct {
 		url        string

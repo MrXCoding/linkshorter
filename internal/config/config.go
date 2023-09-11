@@ -6,35 +6,35 @@ import (
 
 var (
 	netAddr = NetAddress{
-		host: "localhost",
-		port: 8080,
+		Host: "localhost",
+		Port: 8080,
 	}
 	baseURL *string
 )
 
 func Init() {
-	flag.Var(&netAddr, "a", "Net address host:port")
+	flag.Var(&netAddr, "a", "Net address Host:Port")
 	baseURL = flag.String("b", "http://localhost:8080", "base url")
 
 	flag.Parse()
 }
 
 type Main struct {
-	netAddr NetAddress
-	baseURL string
+	NetAddr NetAddress
+	BaseURL string
 }
 
 func (m *Main) Host() string {
-	return m.netAddr.String()
+	return m.NetAddr.String()
 }
 
 func (m *Main) GetBaseURL() string {
-	return m.baseURL + "/"
+	return m.BaseURL + "/"
 }
 
 func New() Main {
 	return Main{
-		netAddr: netAddr,
-		baseURL: *baseURL,
+		NetAddr: netAddr,
+		BaseURL: *baseURL,
 	}
 }
