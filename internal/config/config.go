@@ -2,7 +2,10 @@ package config
 
 import (
 	"flag"
+	"os"
 )
+
+const defBaseURL = "http://localhost:8080"
 
 var (
 	netAddr = NetAddress{
@@ -14,9 +17,16 @@ var (
 
 func Init() {
 	flag.Var(&netAddr, "a", "Net address Host:Port")
-	baseURL = flag.String("b", "http://localhost:8080", "base url")
+	baseURL = flag.String("b", defBaseURL, "base url")
 
 	flag.Parse()
+
+	if envServAddr := os.Getenv("SERVER_ADDRESS"); envServAddr != "" {
+		_ = netAddr.Set(envServAddr)
+	}
+	if envBaseURL := os.Getenv("BASE_URL"); envBaseURL != "" {
+		baseURL = &envBaseURL
+	}
 }
 
 type Main struct {
