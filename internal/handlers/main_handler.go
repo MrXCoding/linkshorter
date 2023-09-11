@@ -41,6 +41,6 @@ func Save(db storage.Repository, config config.Main) http.HandlerFunc {
 		}
 
 		res.WriteHeader(http.StatusCreated)
-		res.Write([]byte(config.GetBaseUrl() + hash))
+		res.Write([]byte(config.GetBaseURL() + hash))
 	}
 }

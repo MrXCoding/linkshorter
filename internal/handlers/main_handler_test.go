@@ -80,7 +80,7 @@ func TestHandle(t *testing.T) {
 				err = result.Body.Close()
 				require.NoError(t, err)
 
-				assert.True(t, strings.Contains(string(userResult), conf.GetBaseUrl()))
+				assert.True(t, strings.Contains(string(userResult), conf.GetBaseURL()))
 			}
 		})
 	}
