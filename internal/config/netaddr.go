@@ -7,12 +7,12 @@ import (
 )
 
 type NetAddress struct {
-	Host string
-	Port int
+	host string
+	port int
 }
 
 func (a NetAddress) String() string {
-	return a.Host + ":" + strconv.Itoa(a.Port)
+	return a.host + ":" + strconv.Itoa(a.port)
 }
 
 func (a *NetAddress) Set(s string) error {
@@ -24,7 +24,7 @@ func (a *NetAddress) Set(s string) error {
 	if err != nil {
 		return err
 	}
-	a.Host = hp[0]
-	a.Port = port
+	a.host = hp[0]
+	a.port = port
 	return nil
 }

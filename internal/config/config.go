@@ -6,8 +6,8 @@ import (
 
 var (
 	netAddr = NetAddress{
-		Host: "localhost",
-		Port: 8080,
+		host: "localhost",
+		port: 8080,
 	}
 	baseURL = "http://localhost:8080/"
 )
