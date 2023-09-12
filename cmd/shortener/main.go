@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/MrXCoding/linkshorter/internal/storage"
+	"github.com/MrXCoding/linkshorter/pkg/config"
 	"github.com/MrXCoding/linkshorter/pkg/hasher"
 	"log"
 

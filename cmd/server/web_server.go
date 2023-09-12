@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/MrXCoding/linkshorter/internal/config"
+	"github.com/MrXCoding/linkshorter/pkg/config"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 

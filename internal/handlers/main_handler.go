@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/MrXCoding/linkshorter/internal/storage"
+	"github.com/MrXCoding/linkshorter/pkg/config"
 	"io"
 	"net/http"
 	"strings"
