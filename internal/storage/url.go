@@ -5,19 +5,19 @@ import (
 	"github.com/MrXCoding/linkshorter/pkg/hasher"
 )
 
-type InMemory struct {
+type Map struct {
 	hasher  hasher.Generator
 	storage map[string]string
 }
 
-func NewInMemory(hasher hasher.Generator) *InMemory {
-	return &InMemory{
+func NewMap(hasher hasher.Generator) *Map {
+	return &Map{
 		hasher:  hasher,
 		storage: make(map[string]string),
 	}
 }
 
-func (im *InMemory) Save(url string) (string, error) {
+func (im *Map) Save(url string) (string, error) {
 	hash := im.hasher.Encode(url, "")
 
 	im.storage[hash] = url
@@ -25,7 +25,7 @@ func (im *InMemory) Save(url string) (string, error) {
 	return hash, nil
 }
 
-func (im *InMemory) Get(hash string) (string, error) {
+func (im *Map) Get(hash string) (string, error) {
 	url, ok := im.storage[hash]
 	if !ok {
 		return "", errors.New(hash + " not found")

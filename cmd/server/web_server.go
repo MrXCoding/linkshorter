@@ -1,15 +1,14 @@
 package server
 
 import (
-	"github.com/MrXCoding/linkshorter/pkg/config"
+	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 
 	"github.com/MrXCoding/linkshorter/internal/handlers"
-	"github.com/MrXCoding/linkshorter/internal/storage"
 )
 
-func Run(db storage.Repository, config config.Main) error {
+func Run(db handlers.Repository, config config.Config) error {
 	r := chi.NewRouter()
 
 	r.Route("/", func(r chi.Router) {

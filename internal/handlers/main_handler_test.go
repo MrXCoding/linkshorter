@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"bytes"
+	"github.com/MrXCoding/linkshorter/internal/config"
 	"github.com/MrXCoding/linkshorter/internal/storage"
-	config2 "github.com/MrXCoding/linkshorter/pkg/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"io"
@@ -21,9 +21,9 @@ func (h *HasherForTest) Encode(str string, seed string) string {
 }
 
 func TestHandle(t *testing.T) {
-	db := storage.NewInMemory(&HasherForTest{})
-	conf := config2.Main{
-		NetAddr: config2.NetAddress{
+	db := storage.NewMap(&HasherForTest{})
+	conf := config.Config{
+		NetAddr: config.NetAddress{
 			Host: "localhost",
 			Port: 8080,
 		},

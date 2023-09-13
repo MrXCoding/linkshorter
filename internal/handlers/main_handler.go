@@ -1,14 +1,13 @@
 package handlers
 
 import (
-	"github.com/MrXCoding/linkshorter/internal/storage"
-	"github.com/MrXCoding/linkshorter/pkg/config"
+	"github.com/MrXCoding/linkshorter/internal/config"
 	"io"
 	"net/http"
 	"strings"
 )
 
-func Get(db storage.Repository) http.HandlerFunc {
+func Get(db Repository) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		arr := strings.Split(req.URL.Path, "/")
 		hash := arr[1]
@@ -24,7 +23,7 @@ func Get(db storage.Repository) http.HandlerFunc {
 	}
 }
 
-func Save(db storage.Repository, config config.Main) http.HandlerFunc {
+func Save(db Repository, config config.Config) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		url, err := io.ReadAll(req.Body)

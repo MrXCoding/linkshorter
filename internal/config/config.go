@@ -15,12 +15,19 @@ var (
 	baseURL *string
 )
 
-func Init() {
+func Parse() {
+	parseFlag()
+	parseEnv()
+}
+
+func parseFlag() {
 	flag.Var(&netAddr, "a", "Net address Host:Port")
 	baseURL = flag.String("b", defBaseURL, "base url")
 
 	flag.Parse()
+}
 
+func parseEnv() {
 	if envServAddr := os.Getenv("SERVER_ADDRESS"); envServAddr != "" {
 		_ = netAddr.Set(envServAddr)
 	}
@@ -29,21 +36,21 @@ func Init() {
 	}
 }
 
-type Main struct {
+type Config struct {
 	NetAddr NetAddress
 	BaseURL string
 }
 
-func (m *Main) Host() string {
+func (m *Config) Host() string {
 	return m.NetAddr.String()
 }
 
-func (m *Main) GetBaseURL() string {
+func (m *Config) GetBaseURL() string {
 	return m.BaseURL + "/"
 }
 
-func New() Main {
-	return Main{
+func New() Config {
+	return Config{
 		NetAddr: netAddr,
 		BaseURL: *baseURL,
 	}

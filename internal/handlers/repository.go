@@ -1,4 +1,4 @@
-package storage
+package handlers
 
 type Repository interface {
 	Save(url string) (string, error)
